@@ -13,6 +13,10 @@ const mapDispatchToProps = (dispatch) => ({
     type: "CHANGE_VIEW",
     payload: views.EDIT,
   }),
+  showItem: (id) => dispatch({
+    type: "SHOW_ITEM",
+    payload: id,
+  })
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LibraryView);

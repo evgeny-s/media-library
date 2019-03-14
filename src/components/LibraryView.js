@@ -21,16 +21,24 @@ class LibraryView extends React.Component {
             <th scope="col">title</th>
             <th scope="col">author</th>
             <th scope="col">price</th>
+            <th scope="col">actions</th>
           </tr>
           </thead>
           <tbody>
           {
             this.props.items.map(({id, title, author, price}) => (
               <tr key={id}>
-                <th scope="row">3</th>
+                <th scope="row">{id}</th>
                 <td>{title}</td>
                 <td>{author}</td>
                 <td>{price}</td>
+                <td>
+                  <div className='btn-group'>
+                    <button className='btn btn-danger'>Delete</button>
+                    <button className='btn btn-warning'>Edit</button>
+                    <button className='btn btn-primary' onClick={this.props.showItem.bind(null, id)}>Show</button>
+                  </div>
+                </td>
               </tr>
             ))
           }
@@ -44,11 +52,12 @@ class LibraryView extends React.Component {
 LibraryView.propTypes = {
   fetchList: PropTypes.func,
   changeView: PropTypes.func,
+  showItem: PropTypes.func,
   items: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.number,
     title: PropTypes.string,
     author: PropTypes.string,
-    price: PropTypes.number,
+    price: PropTypes.string,
   }))
 };
 

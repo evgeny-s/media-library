@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import viewConsts from './../consts/views';
 import LibraryView from './../containers/LibraryView';
-import Item from './Item';
+import Item from './../containers/Item';
 import Form from './../containers/Form';
 
 function Content({view}) {

@@ -4,6 +4,7 @@ import viewsConsts from './../consts/views';
 
 const initialState = {
   view: viewsConsts.LIST,
+  selectedId: null,
 };
 
 function commonReducers(state = initialState, action) {
@@ -14,7 +15,13 @@ function commonReducers(state = initialState, action) {
           view: action.payload,
         }
       });
-
+    case 'SHOW_ITEM':
+      return update(state, {
+        $merge: {
+          selectedId: action.payload,
+          view: viewsConsts.SHOW,
+        }
+      });
     default:
       return state;
   }
