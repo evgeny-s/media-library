@@ -16,18 +16,16 @@ function* submitForm() {
     newItemParams[field.toLowerCase()] = booksStore[`new${field}`];
   });
 
+  let item;
   if (booksStore.editItemId) {
     newItemParams.id = booksStore.editItemId;
-    const item = yield call(booksService.update, newItemParams);
-
-    yield put({type: "ITEM_UPDATED", payload: item});
-    yield put({type: "CHANGE_VIEW", payload: views.LIST});
+    item = yield call(booksService.update, newItemParams);
   } else {
-    const item = yield call(booksService.add, newItemParams);
-
-    yield put({type: "ITEM_ADDED", payload: item});
-    yield put({type: "CHANGE_VIEW", payload: views.LIST});
+    item = yield call(booksService.add, newItemParams);
   }
+
+  yield put({type: "ITEM_UPDATED", payload: item});
+  yield put({type: "CHANGE_VIEW", payload: views.LIST});
 }
 
 function* deleteItem(action) {
