@@ -2,6 +2,7 @@ import {call, put, takeLatest, all, select} from 'redux-saga/effects';
 
 import booksService from './../services/booksService';
 import views from "../consts/views";
+import formFields from "../consts/formFields";
 
 function* fetchList() {
   const list = yield call(booksService.getList);
@@ -10,17 +11,28 @@ function* fetchList() {
 
 function* submitForm() {
   const booksStore = yield select((state) => state.books);
-  const item = yield call(booksService.add, {
-    title: booksStore.newTitle,
-    description: booksStore.newDescription,
-    author: booksStore.newAuthor,
-    image: booksStore.newImage,
-    pages: booksStore.newPages,
-    price: booksStore.newPrice,
+  const newItemParams = {};
+  formFields.forEach((field) => {
+    newItemParams[field.toLowerCase()] = booksStore[`new${field}`];
   });
 
-  yield put({type: "ITEM_ADDED", payload: item});
-  yield put({type: "CHANGE_VIEW", payload: views.LIST})
+  if (booksStore.editItemId) {
+    newItemParams.id = booksStore.editItemId;
+    const item = yield call(booksService.update, newItemParams);
+
+    yield put({type: "ITEM_UPDATED", payload: item});
+    yield put({type: "CHANGE_VIEW", payload: views.LIST});
+  } else {
+    const item = yield call(booksService.add, newItemParams);
+
+    yield put({type: "ITEM_ADDED", payload: item});
+    yield put({type: "CHANGE_VIEW", payload: views.LIST});
+  }
+}
+
+function* deleteItem(action) {
+  yield call(booksService.remove, action.payload);
+  yield put({type: "ITEM_DELETED", payload: action.payload});
 }
 
 function* fetchListSaga() {
@@ -31,9 +43,14 @@ function* submitFormSaga() {
   yield takeLatest("SUBMIT_FORM", submitForm)
 }
 
+function* deleteItemSaga() {
+  yield takeLatest("DELETE_ITEM", deleteItem)
+}
+
 export default function* rootSaga() {
   yield all([
     fetchListSaga(),
     submitFormSaga(),
+    deleteItemSaga(),
   ])
 }

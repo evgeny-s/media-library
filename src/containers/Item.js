@@ -3,8 +3,7 @@ import Item from './../components/Item';
 import views from "../consts/views";
 
 const mapStateToProps = (state) => {
-  const {selectedId} = state.common;
-  const {list} = state.books;
+  const {list, selectedId} = state.books;
 
   let selectedItem;
   list.forEach((item) => {
@@ -19,7 +18,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  changeView: () => dispatch({
+  onBackClick: () => dispatch({
     type: "CHANGE_VIEW",
     payload: views.LIST,
   }),

@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import withBackButton from "../hocs/withBackButton";
 
 function Item({title, description, author, image, pages, price, changeView}) {
   return (
     <div>
-      <button className="btn btn-primary" onClick={changeView}>{'<'} Back</button>
       <div className="card mt-1">
         <div className="card-body">
           <img className="card-img-top" src={image}/>
@@ -20,6 +20,7 @@ function Item({title, description, author, image, pages, price, changeView}) {
 }
 
 Item.propTypes = {
+  onBackClick: PropTypes.func,
   title: PropTypes.string,
   description: PropTypes.string,
   author: PropTypes.string,
@@ -28,4 +29,5 @@ Item.propTypes = {
   price: PropTypes.string
 };
 
-export default Item;
+export default withBackButton(Item);
+export {Item};

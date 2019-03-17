@@ -7,7 +7,24 @@ class LibraryView extends React.Component {
   }
 
   _onCreate = () => {
-    this.props.changeView();
+    this.props.editItem(null);
+    this.props.changeToEditView();
+  };
+
+  _onEdit = (id) => {
+    this.props.editItem(id);
+    this.props.changeToEditView();
+  };
+
+  _onShow = (id) => {
+    this.props.showItem(id);
+    this.props.changeToShowView();
+  };
+
+  _onDelete = (id) => {
+    if (window.confirm('Are you sure?')) {
+      this.props.deleteItem(id);
+    }
   };
 
   render() {
@@ -21,22 +38,22 @@ class LibraryView extends React.Component {
             <th scope="col">title</th>
             <th scope="col">author</th>
             <th scope="col">price</th>
-            <th scope="col">actions</th>
+            <th scope="col" className='text-center'>actions</th>
           </tr>
           </thead>
           <tbody>
           {
             this.props.items.map(({id, title, author, price}) => (
               <tr key={id}>
-                <th scope="row">{id}</th>
+                <td>{id}</td>
                 <td>{title}</td>
                 <td>{author}</td>
                 <td>{price}</td>
-                <td>
+                <td className='text-center'>
                   <div className='btn-group'>
-                    <button className='btn btn-danger'>Delete</button>
-                    <button className='btn btn-warning'>Edit</button>
-                    <button className='btn btn-primary' onClick={this.props.showItem.bind(null, id)}>Show</button>
+                    <button className='btn btn-danger' onClick={this._onDelete.bind(null, id)}>Delete</button>
+                    <button className='btn btn-warning' onClick={this._onEdit.bind(null, id)}>Edit</button>
+                    <button className='btn btn-primary' onClick={this._onShow.bind(null, id)}>Show</button>
                   </div>
                 </td>
               </tr>
@@ -51,8 +68,10 @@ class LibraryView extends React.Component {
 
 LibraryView.propTypes = {
   fetchList: PropTypes.func,
-  changeView: PropTypes.func,
+  changeToEditView: PropTypes.func,
+  changeToShowView: PropTypes.func,
   showItem: PropTypes.func,
+  editItem: PropTypes.func,
   items: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.number,
     title: PropTypes.string,

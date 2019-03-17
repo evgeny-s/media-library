@@ -9,10 +9,11 @@ const mapStateToProps = (state) => ({
   newImage: state.books.newImage,
   newPages: state.books.newPages,
   newPrice: state.books.newPrice,
+  editItemId: state.books.editItemId,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  changeView: () => dispatch({
+  onBackClick: () => dispatch({
     type: "CHANGE_VIEW",
     payload: views.LIST,
   }),

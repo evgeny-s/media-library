@@ -2,15 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import InputWithLabel from './InputWithLabel';
+import withBackButton from "../hocs/withBackButton";
+import fields from '../consts/formFields';
 
-const fields = [
-  'Title', 'Author', 'Image', 'Description', 'Pages', 'Price',
-];
-
-function Form({changeView, submitForm, errorText, ...rest}) {
+function Form({submitForm, errorText, editItemId, ...rest}) {
   return (
     <div>
-      <button className="btn btn-primary" onClick={changeView}>{'<'} Back</button>
       <div className='mt-1'>
         <div>{errorText}</div>
         <form>
@@ -25,7 +22,7 @@ function Form({changeView, submitForm, errorText, ...rest}) {
             ))
           }
           <div className='text-right'>
-            <button onClick={submitForm} type="button" className="btn btn-success">Submit</button>
+            <button onClick={submitForm} type="button" className="btn btn-success">{editItemId ? 'Update' : 'Create'}</button>
           </div>
         </form>
       </div>
@@ -34,7 +31,7 @@ function Form({changeView, submitForm, errorText, ...rest}) {
 }
 
 Form.propTypes = {
-  changeView: PropTypes.func,
+  onBackClick: PropTypes.func,
   submitForm: PropTypes.func,
   newTitle: PropTypes.string,
   newDescription: PropTypes.string,
@@ -43,6 +40,8 @@ Form.propTypes = {
   newPages: PropTypes.string,
   newPrice: PropTypes.string,
   errorText: PropTypes.string,
+  editItemId: PropTypes.number,
 };
 
-export default Form;
+export default withBackButton(Form);
+export {Form};
